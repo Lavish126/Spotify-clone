@@ -53,7 +53,7 @@ spotify-clone/
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_REPOSITORY_URL
+git clone (https://github.com/Lavish126/Spotify-clone/tree/main)
 cd spotify-clone
 ```
 
