@@ -3,37 +3,8 @@ const userModel = require("../models/user.model")
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const TOKEN_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days, same as the JWT expiry
-
-const cookieOptions = {
-    httpOnly: true, // JavaScript in the browser can't read the token
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production", // HTTPS only in production
-}
-
-function sendToken(res, user){
-    const token = jwt.sign({
-        id: user._id,
-        role: user.role,
-    },process.env.JWT_SECRET,{expiresIn:"7d"})
-
-    res.cookie("token",token,{...cookieOptions, maxAge: TOKEN_MAX_AGE});
-}
-
 async function registerUser(req,res){
-  try{
     const {userName, email, password, role="user"} = req.body;
-
-    if(!userName || !email || !password){
-        return res.status(400).json({
-            message:"userName, email and password are required"
-        })
-    }
-    if(!["user","artist"].includes(role)){
-        return res.status(400).json({
-            message:"role must be either user or artist"
-        })
-    }
 
     const isUserAlreadyExist = await userModel.findOne({
       $or: [  //Array
@@ -57,7 +28,12 @@ async function registerUser(req,res){
         role
     })
 
-    sendToken(res, user);
+    const token = jwt.sign({
+        id: user._id,
+        role: user.role,
+    },process.env.JWT_SECRET)
+
+    res.cookie("token",token);
 
     res.status(201).json({
         message:"user registered successfully",
@@ -68,30 +44,16 @@ async function registerUser(req,res){
             id: user._id,
         }
     })
-  }catch(error){
-    res.status(500).json({
-        message:"Error registering user",
-        error:error.message
-    })
-  }
 }
 
 async function loginUser(req,res){
-  try{
    const {userName,email,password} = req.body;
 
-   if((!userName && !email) || !password){
-    return res.status(400).json({
-        message:"userName or email, and password are required"
-    })
-   }
-
-   // Only search by the identifiers that were actually sent
    const user = await userModel.findOne({
     $or:[
-        userName && {userName},
-        email && {email}
-    ].filter(Boolean)
+        {userName},
+        {email}
+    ] 
 })
     if (!user) {
         return res.status(401).json({
@@ -110,7 +72,12 @@ async function loginUser(req,res){
     })
    }
 
-   sendToken(res, user);
+   const token = jwt.sign({
+    id: user._id,
+    role: user.role
+   },process.env.JWT_SECRET)
+
+   res.cookie("token",token);
 
    res.status(200).json({
     message:"user logged in successfully",
@@ -122,16 +89,12 @@ async function loginUser(req,res){
     }
 
    })
-  }catch(error){
-    res.status(500).json({
-        message:"Error logging in",
-        error:error.message
-    })
-  }
+
+  
 }
 
 async function logoutUser(req,res){
-    res.clearCookie("token",cookieOptions)
+    res.clearCookie("token")
     res.status(200).json({
         message:"User logged out successfully"
     })

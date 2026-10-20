@@ -18,12 +18,8 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         enum:['user','artist'],
-        default:'user',
-     },
-    likedMusics:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"music"
-    }]
+        default:'user',   
+     }
 })
 
 const userModel = mongoose.model("user",userSchema);

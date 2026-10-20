@@ -1,6 +1,6 @@
-# 🎵 Music App
+# 🎵 Spotify Clone — Backend
 
-I'm building a music streaming app as a hands-on project to improve my backend development skills and understand how a music streaming application works behind the scenes.
+I'm building a Spotify Clone as a hands-on project to improve my backend development skills and understand how a music streaming application works behind the scenes.
 
 The main goal of this project is to learn how to build REST APIs, manage users and roles, handle authentication, upload music, and organize songs into albums.
 
@@ -16,13 +16,6 @@ The main goal of this project is to learn how to build REST APIs, manage users a
 - **Album APIs** — Get all albums or fetch a specific album by its ID.
 - **Logout** — Clear the authentication cookie.
 - **Pagination** — Fetch music in smaller batches instead of loading everything at once.
-- **Cover Images** — Songs and albums can have cover art, stored on ImageKit.
-- **Edit & Delete** — Artists can rename, re-cover or delete their own songs and albums.
-- **Search** — Find songs, albums and artists by name.
-- **Artist Pages** — See every song and album by an artist.
-- **Liked Songs** — Heart songs and find them on one page.
-- **Playlists** — Create, rename and delete private playlists and add or remove songs.
-- **Frontend** — React web app with a persistent audio player.
 
 ## 🛠️ Tech Stack
 
@@ -40,20 +33,20 @@ The main goal of this project is to learn how to build REST APIs, manage users a
 ## 📁 Project Structure
 
 ```text
-├── src/
-│   ├── controllers/   # auth + music logic
-│   ├── db/            # MongoDB connection
-│   ├── middlewares/   # authUser / authArtist (JWT cookie)
-│   ├── models/        # user, music, album, playlist
-│   ├── routes/
-│   ├── services/      # ImageKit upload
-│   └── app.js
-├── frontend/          # React + Vite web app
+spotify-clone/
+├── controllers/
+├── middlewares/
+├── models/
+├── routes/
+├── db/
+├── app.js
 ├── server.js
 ├── .env
 ├── .gitignore
 └── package.json
 ```
+
+*The exact folder structure may vary depending on the final project organization.*
 
 ## ⚙️ Getting Started
 
@@ -61,7 +54,7 @@ The main goal of this project is to learn how to build REST APIs, manage users a
 
 ```bash
 git clone (https://github.com/Lavish126/Spotify-clone/tree/main)
-cd Spotify-clone
+cd spotify-clone
 ```
 
 ### 2. Install dependencies
@@ -75,13 +68,15 @@ npm install
 Create a `.env` file in the project root and add your own credentials:
 
 ```env
-PORT=3000                # optional, defaults to 3000
+PORT=3000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
+IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
+IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
 ```
 
-Set `NODE_ENV=production` when deploying over HTTPS so the auth cookie is marked `Secure`.
+Make sure the variable names match those used in your code.
 
 ### 4. Start the server
 
@@ -90,18 +85,6 @@ npm run dev
 ```
 
 If everything is configured correctly, the server should start on your configured port.
-
-### 5. Start the frontend
-
-In a second terminal:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Open http://localhost:5173. Vite forwards `/api` requests to the backend on port 3000.
 
 ## 🔌 API Overview
 
@@ -112,23 +95,11 @@ Open http://localhost:5173. Vite forwards `/api` requests to the backend on port
 | POST | `/api/auth/logout` | Log out |
 | POST | `/api/music/upload` | Upload music as an artist |
 | POST | `/api/music/album` | Create an album |
-| GET | `/api/music/allMusics?page=1&limit=10&artist=<id>` | Fetch paginated music, newest first (`limit` max 50, `artist` optional) |
+| GET | `/api/music/allMusics?page=1&limit=10` | Fetch paginated music |
 | GET | `/api/music/albums` | Fetch all albums |
 | GET | `/api/music/albums/:id` | Fetch an album by ID |
-| PATCH / DELETE | `/api/music/musics/:id` | Edit (title, cover) or delete your song |
-| PATCH / DELETE | `/api/music/albums/:id` | Edit (title, songs, cover) or delete your album |
-| GET | `/api/music/search?q=` | Search songs, albums and artists |
-| GET | `/api/music/artists/:id` | Artist profile with songs and albums |
-| GET | `/api/music/liked` | Your liked songs |
-| POST / DELETE | `/api/music/musics/:id/like` | Like / unlike a song |
-| GET / POST | `/api/playlists` | Your playlists / create one |
-| GET / PATCH / DELETE | `/api/playlists/:id` | View, rename or delete a playlist |
-| POST | `/api/playlists/:id/musics` | Add a song (`{ musicId }`) |
-| DELETE | `/api/playlists/:id/musics/:musicId` | Remove a song |
 
-Uploads (`/upload`, `/album` and the PATCH routes) are `multipart/form-data`: audio in the `music` field, an optional image in `cover`, and album songs as a JSON array string in `musics`.
-
-Auth uses an `httpOnly` cookie holding a JWT that expires after 7 days. Uploads accept audio files up to 20 MB. Errors are always returned as JSON `{ "message": "..." }`.
+*These endpoints assume your routes are mounted at `/api/auth` and `/api/music`. Update this table if your actual routes differ.*
 
 ## 🧪 Testing
 
