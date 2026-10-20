@@ -1,6 +1,6 @@
-# 🎵 Spotify Clone — Backend
+# 🎵 Music App
 
-I'm building a Spotify Clone as a hands-on project to improve my backend development skills and understand how a music streaming application works behind the scenes.
+I'm building a music streaming app as a hands-on project to improve my backend development skills and understand how a music streaming application works behind the scenes.
 
 The main goal of this project is to learn how to build REST APIs, manage users and roles, handle authentication, upload music, and organize songs into albums.
 
@@ -54,7 +54,7 @@ The main goal of this project is to learn how to build REST APIs, manage users a
 
 ```bash
 git clone (https://github.com/Lavish126/Spotify-clone/tree/main)
-cd spotify-clone
+cd Spotify-clone
 ```
 
 ### 2. Install dependencies
