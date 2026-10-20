@@ -16,6 +16,13 @@ The main goal of this project is to learn how to build REST APIs, manage users a
 - **Album APIs** — Get all albums or fetch a specific album by its ID.
 - **Logout** — Clear the authentication cookie.
 - **Pagination** — Fetch music in smaller batches instead of loading everything at once.
+- **Cover Images** — Songs and albums can have cover art, stored on ImageKit.
+- **Edit & Delete** — Artists can rename, re-cover or delete their own songs and albums.
+- **Search** — Find songs, albums and artists by name.
+- **Artist Pages** — See every song and album by an artist.
+- **Liked Songs** — Heart songs and find them on one page.
+- **Playlists** — Create, rename and delete private playlists and add or remove songs.
+- **Frontend** — React web app with a persistent audio player.
 
 ## 🛠️ Tech Stack
 
@@ -37,7 +44,7 @@ The main goal of this project is to learn how to build REST APIs, manage users a
 │   ├── controllers/   # auth + music logic
 │   ├── db/            # MongoDB connection
 │   ├── middlewares/   # authUser / authArtist (JWT cookie)
-│   ├── models/        # user, music, album
+│   ├── models/        # user, music, album, playlist
 │   ├── routes/
 │   ├── services/      # ImageKit upload
 │   └── app.js
@@ -108,6 +115,18 @@ Open http://localhost:5173. Vite forwards `/api` requests to the backend on port
 | GET | `/api/music/allMusics?page=1&limit=10&artist=<id>` | Fetch paginated music, newest first (`limit` max 50, `artist` optional) |
 | GET | `/api/music/albums` | Fetch all albums |
 | GET | `/api/music/albums/:id` | Fetch an album by ID |
+| PATCH / DELETE | `/api/music/musics/:id` | Edit (title, cover) or delete your song |
+| PATCH / DELETE | `/api/music/albums/:id` | Edit (title, songs, cover) or delete your album |
+| GET | `/api/music/search?q=` | Search songs, albums and artists |
+| GET | `/api/music/artists/:id` | Artist profile with songs and albums |
+| GET | `/api/music/liked` | Your liked songs |
+| POST / DELETE | `/api/music/musics/:id/like` | Like / unlike a song |
+| GET / POST | `/api/playlists` | Your playlists / create one |
+| GET / PATCH / DELETE | `/api/playlists/:id` | View, rename or delete a playlist |
+| POST | `/api/playlists/:id/musics` | Add a song (`{ musicId }`) |
+| DELETE | `/api/playlists/:id/musics/:musicId` | Remove a song |
+
+Uploads (`/upload`, `/album` and the PATCH routes) are `multipart/form-data`: audio in the `music` field, an optional image in `cover`, and album songs as a JSON array string in `musics`.
 
 Auth uses an `httpOnly` cookie holding a JWT that expires after 7 days. Uploads accept audio files up to 20 MB. Errors are always returned as JSON `{ "message": "..." }`.
 

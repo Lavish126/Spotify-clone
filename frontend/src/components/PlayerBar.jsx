@@ -1,5 +1,6 @@
 import { usePlayer } from "../context/PlayerContext";
-import { artistName, coverStyle, formatTime } from "../utils";
+import { artistName, formatTime } from "../utils";
+import Cover from "./Cover";
 import { NextIcon, PauseIcon, PlayIcon, PrevIcon, VolumeIcon } from "./Icons";
 
 export default function PlayerBar() {
@@ -13,7 +14,7 @@ export default function PlayerBar() {
       <div className="player-track">
         {current ? (
           <>
-            <div className="cover cover-sm" style={coverStyle(current._id)} />
+            <Cover url={current.coverUrl} seed={current._id} className="cover-sm" />
             <div className="player-meta">
               <strong>{current.title}</strong>
               <small>{artistName(current.artist)}</small>

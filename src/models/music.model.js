@@ -14,6 +14,25 @@ const musicSchema = new mongoose.Schema({
     ref: "user",
     required: true
 
+  },
+  coverUrl:{
+    type:String,
+  },
+  // ImageKit ids, used to delete the files when the song is deleted
+  fileId:{
+    type:String,
+  },
+  coverFileId:{
+    type:String,
+  }
+})
+
+// ImageKit file ids are internal; keep them out of API responses
+musicSchema.set("toJSON", {
+  transform(doc, ret){
+    delete ret.fileId;
+    delete ret.coverFileId;
+    return ret;
   }
 })
 

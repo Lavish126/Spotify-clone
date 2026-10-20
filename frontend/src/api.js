@@ -28,6 +28,16 @@ const jsonBody = (method, body) => ({
   body: JSON.stringify(body),
 });
 
+// Builds multipart form data; arrays are sent as JSON strings, empty values are skipped
+function formBody(method, fields) {
+  const form = new FormData();
+  for (const [key, value] of Object.entries(fields)) {
+    if (value === undefined || value === null) continue;
+    form.append(key, Array.isArray(value) ? JSON.stringify(value) : value);
+  }
+  return { method, body: form };
+}
+
 export const api = {
   register: (body) => request("/auth/register", jsonBody("POST", body)),
   login: (body) => request("/auth/login", jsonBody("POST", body)),
@@ -35,14 +45,29 @@ export const api = {
 
   // params: { page, limit, artist }
   getMusics: (params = {}) => request(`/music/allMusics?${new URLSearchParams(params)}`),
+  // text fields go before files so multer sees them
+  uploadMusic: (title, file, cover) => request("/music/upload", formBody("POST", { title, music: file, cover })),
+  updateMusic: (id, { title, cover }) => request(`/music/musics/${id}`, formBody("PATCH", { title, cover })),
+  deleteMusic: (id) => request(`/music/musics/${id}`, { method: "DELETE" }),
+
   getAlbums: () => request("/music/albums"),
   getAlbum: (id) => request(`/music/albums/${id}`),
+  createAlbum: ({ title, musics, cover }) => request("/music/album", formBody("POST", { title, musics, cover })),
+  updateAlbum: (id, { title, musics, cover }) => request(`/music/albums/${id}`, formBody("PATCH", { title, musics, cover })),
+  deleteAlbum: (id) => request(`/music/albums/${id}`, { method: "DELETE" }),
 
-  uploadMusic: (title, file) => {
-    const form = new FormData();
-    form.append("title", title); // text fields before the file so multer sees them
-    form.append("music", file);
-    return request("/music/upload", { method: "POST", body: form });
-  },
-  createAlbum: (title, musics) => request("/music/album", jsonBody("POST", { title, musics })),
+  search: (q) => request(`/music/search?${new URLSearchParams({ q })}`),
+  getArtist: (id) => request(`/music/artists/${id}`),
+
+  getLiked: () => request("/music/liked"),
+  like: (id) => request(`/music/musics/${id}/like`, { method: "POST" }),
+  unlike: (id) => request(`/music/musics/${id}/like`, { method: "DELETE" }),
+
+  getPlaylists: () => request("/playlists"),
+  getPlaylist: (id) => request(`/playlists/${id}`),
+  createPlaylist: (name) => request("/playlists", jsonBody("POST", { name })),
+  renamePlaylist: (id, name) => request(`/playlists/${id}`, jsonBody("PATCH", { name })),
+  deletePlaylist: (id) => request(`/playlists/${id}`, { method: "DELETE" }),
+  addToPlaylist: (id, musicId) => request(`/playlists/${id}/musics`, jsonBody("POST", { musicId })),
+  removeFromPlaylist: (id, musicId) => request(`/playlists/${id}/musics/${musicId}`, { method: "DELETE" }),
 };

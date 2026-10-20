@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
+import { useAuth } from "../context/AuthContext";
 import { usePlayer } from "../context/PlayerContext";
+import Cover from "../components/Cover";
 import TrackList from "../components/TrackList";
 import { PlayIcon } from "../components/Icons";
-import { artistName, coverStyle } from "../utils";
+import { artistName } from "../utils";
 
 export default function AlbumDetail() {
   const { albumId } = useParams();
+  const { user } = useAuth();
   const { playQueue } = usePlayer();
   const [album, setAlbum] = useState(null);
   const [error, setError] = useState("");
@@ -30,25 +33,30 @@ export default function AlbumDetail() {
   }
   if (!album) return <p className="muted">Loading album…</p>;
 
-  // Songs inside an album don't have their artist populated, so use the album's artist
-  const tracks = (album.musics || []).map((m) => ({ ...m, artist: album.artist }));
+  // Songs without their own cover use the album's cover
+  const tracks = (album.musics || []).map((m) => ({ ...m, coverUrl: m.coverUrl || album.coverUrl }));
+  const isOwner = album.artist?._id === user?.id;
 
   return (
     <section>
       <Link to="/albums" className="back-link">← Albums</Link>
       <header className="album-hero">
-        <div className="cover cover-xl" style={coverStyle(album._id)} />
+        <Cover url={album.coverUrl} seed={album._id} className="cover-xl" />
         <div>
           <p className="eyebrow">Album</p>
           <h1>{album.albumTitle}</h1>
           <p className="muted">
-            {artistName(album.artist)} · {tracks.length} {tracks.length === 1 ? "song" : "songs"}
+            <Link to={`/artist/${album.artist?._id}`} className="artist-link">{artistName(album.artist)}</Link>
+            {" · "}{tracks.length} {tracks.length === 1 ? "song" : "songs"}
           </p>
-          {tracks.length > 0 && (
-            <button className="btn btn-icon" onClick={() => playQueue(tracks, 0)}>
-              <PlayIcon /> Play album
-            </button>
-          )}
+          <div className="hero-actions">
+            {tracks.length > 0 && (
+              <button className="btn btn-icon" onClick={() => playQueue(tracks, 0)}>
+                <PlayIcon /> Play album
+              </button>
+            )}
+            {isOwner && <Link to="/studio" className="btn-ghost">Edit in Studio</Link>}
+          </div>
         </div>
       </header>
 

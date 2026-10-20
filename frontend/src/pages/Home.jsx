@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../api";
 import { useAuth } from "../context/AuthContext";
+import { useLibrary } from "../context/LibraryContext";
 import { usePlayer } from "../context/PlayerContext";
 import TrackList from "../components/TrackList";
-import { PlayIcon } from "../components/Icons";
+import { PlayIcon, PlaylistIcon } from "../components/Icons";
 
 const PAGE_SIZE = 20;
 
@@ -17,6 +19,7 @@ function greeting() {
 export default function Home() {
   const { user } = useAuth();
   const { playQueue } = usePlayer();
+  const { playlists } = useLibrary();
   const [tracks, setTracks] = useState([]);
   const [pagination, setPagination] = useState(null);
   const [status, setStatus] = useState("loading");
@@ -56,6 +59,17 @@ export default function Home() {
           </button>
         )}
       </header>
+
+      {/* On phones the sidebar playlist list is hidden, so show playlists here */}
+      {playlists.length > 0 && (
+        <div className="home-playlists">
+          {playlists.map((p) => (
+            <Link key={p._id} to={`/playlist/${p._id}`} className="artist-chip">
+              <PlaylistIcon width={18} height={18} /> {p.name}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {status === "error" && <p className="error">{error}</p>}
       {status === "ready" && tracks.length === 0 && (

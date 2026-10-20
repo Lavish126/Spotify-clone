@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { api } from "../api";
-import { artistName, coverStyle } from "../utils";
+import AlbumGrid from "../components/AlbumGrid";
 
 export default function Albums() {
   const [albums, setAlbums] = useState([]);
@@ -38,18 +37,7 @@ export default function Albums() {
         </div>
       )}
 
-      <div className="album-grid">
-        {albums.map((album) => (
-          <Link key={album._id} to={`/albums/${album._id}`} className="album-card">
-            <div className="cover cover-lg" style={coverStyle(album._id)} />
-            <strong>{album.albumTitle || "Untitled album"}</strong>
-            <small>
-              {artistName(album.artist)}
-              {Array.isArray(album.musics) && ` · ${album.musics.length} ${album.musics.length === 1 ? "song" : "songs"}`}
-            </small>
-          </Link>
-        ))}
-      </div>
+      <AlbumGrid albums={albums} />
     </section>
   );
 }

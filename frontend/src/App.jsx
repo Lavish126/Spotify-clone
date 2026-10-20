@@ -8,6 +8,10 @@ import Home from "./pages/Home";
 import Albums from "./pages/Albums";
 import AlbumDetail from "./pages/AlbumDetail";
 import Studio from "./pages/Studio";
+import Search from "./pages/Search";
+import Liked from "./pages/Liked";
+import PlaylistDetail from "./pages/PlaylistDetail";
+import ArtistPage from "./pages/ArtistPage";
 
 function AppLayout() {
   const { user } = useAuth();
@@ -42,6 +46,10 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/albums" element={<Albums />} />
         <Route path="/albums/:albumId" element={<AlbumDetail />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/liked" element={<Liked />} />
+        <Route path="/playlist/:playlistId" element={<PlaylistDetail />} />
+        <Route path="/artist/:artistId" element={<ArtistPage />} />
         <Route path="/studio" element={<ArtistOnly><Studio /></ArtistOnly>} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

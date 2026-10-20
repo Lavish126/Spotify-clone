@@ -5,6 +5,7 @@ const helmet = require("helmet")
 const multer = require("multer")
 const authRoutes = require("./routes/auth.routes")
 const musicRoutes = require("./routes/music.routes")
+const playlistRoutes = require("./routes/playlist.routes")
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(helmet({
         directives:{
             // songs are streamed from ImageKit
             mediaSrc:["'self'", "https://ik.imagekit.io"],
+            // cover images are also hosted on ImageKit
+            imgSrc:["'self'", "data:", "https://ik.imagekit.io"],
         }
     }
 }));
@@ -23,6 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth",authRoutes);
 app.use("/api/music",musicRoutes);
+app.use("/api/playlists",playlistRoutes);
 
 // In production the built React app is served from the same origin as the API
 if(process.env.NODE_ENV === "production"){

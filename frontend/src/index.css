@@ -218,6 +218,94 @@ input[type="range"] { accent-color: var(--accent); width: 100%; cursor: pointer;
 .seek { display: flex; align-items: center; gap: 0.6rem; width: 100%; max-width: 560px; font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .player-volume { display: flex; align-items: center; gap: 0.5rem; justify-self: end; width: 140px; color: var(--muted); }
 
+
+/* ---------- Covers (images) ---------- */
+img.cover { object-fit: cover; display: block; background: var(--surface-2); }
+
+/* ---------- Track actions ---------- */
+.track-actions { margin-left: auto; display: flex; align-items: center; gap: 0.15rem; }
+.track-actions .icon-btn { opacity: 0.55; }
+.track:hover .track-actions .icon-btn, .track-actions .icon-btn:focus-visible { opacity: 1; }
+.track-actions .icon-btn.liked { color: var(--accent); opacity: 1; }
+.artist-link { color: var(--muted); font-size: 0.85rem; }
+.artist-link:hover { color: var(--text); }
+
+/* ---------- Popover (add to playlist) ---------- */
+.popover-anchor { position: relative; }
+.popover {
+  position: absolute; right: 0; top: calc(100% + 4px); z-index: 20; width: 230px;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.4rem; box-shadow: 0 12px 32px rgb(0 0 0 / 0.5); display: grid; gap: 2px;
+}
+.popover-title { margin: 0.3rem 0.5rem 0.4rem; font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.popover-msg { margin: 0.5rem; color: var(--success); font-size: 0.9rem; }
+.popover-item {
+  text-align: left; background: none; border: 0; color: var(--text); padding: 0.5rem 0.6rem; border-radius: 6px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.popover-item:hover { background: var(--border); }
+.popover-new { display: flex; gap: 0.25rem; margin-top: 0.3rem; border-top: 1px solid var(--border); padding-top: 0.4rem; }
+.popover-new input { flex: 1; min-width: 0; padding: 0.45rem 0.6rem; font-size: 0.85rem; }
+
+/* ---------- Sidebar library ---------- */
+.library { display: grid; gap: 0.5rem; min-height: 0; flex: 1; grid-template-rows: auto auto 1fr; }
+.library-head { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0 0.3rem 0 0.8rem; }
+.library-new input { width: 100%; padding: 0.5rem 0.7rem; font-size: 0.9rem; }
+.library-list { display: grid; gap: 2px; align-content: start; overflow-y: auto; }
+.library-list > small { padding: 0 0.8rem; }
+.library-list a {
+  display: flex; align-items: center; gap: 0.7rem; padding: 0.5rem 0.8rem; border-radius: 8px; color: var(--muted); font-size: 0.92rem;
+}
+.library-list a span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.library-list a:hover, .library-list a.active { color: var(--text); background: var(--surface-2); text-decoration: none; }
+
+/* ---------- Search ---------- */
+.search-box {
+  display: flex; align-items: center; gap: 0.6rem; max-width: 520px; margin-bottom: 1.75rem;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 0 1rem; color: var(--muted);
+}
+.search-box:focus-within { border-color: var(--accent); }
+.search-box input { flex: 1; background: none; border: 0; outline: none; color: var(--text); padding: 0.8rem 0; box-shadow: none; }
+.result-block { margin-bottom: 2rem; }
+.artist-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.artist-chip {
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 1rem 0.4rem 0.4rem; border-radius: 999px;
+  background: var(--surface); color: var(--text); font-weight: 500;
+}
+.artist-chip:hover { background: var(--surface-2); text-decoration: none; }
+.artist-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; }
+
+/* ---------- Heroes ---------- */
+.hero-actions { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.hero-actions .btn-ghost { padding: 0.55rem 1rem; font-size: 0.85rem; }
+.liked-cover { display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #ff7a59, #8c5aff); }
+.artist-hero-avatar {
+  width: 200px; height: 200px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 4.5rem; font-weight: 700; box-shadow: 0 12px 32px rgb(0 0 0 / 0.45); flex-shrink: 0;
+}
+.rename-form { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; }
+.rename-form input { font-size: 1.3rem; font-weight: 700; }
+.btn-ghost.danger:hover { color: var(--danger); border-color: var(--danger); }
+a.btn-ghost { display: inline-block; }
+a.btn-ghost:hover { text-decoration: none; }
+
+/* ---------- Studio management ---------- */
+.studio-grid.manage { margin-top: 1.25rem; }
+.cover-input { display: flex; align-items: center; gap: 0.8rem; cursor: pointer; color: var(--text); }
+.cover-input span { display: grid; gap: 0.1rem; font-size: 0.9rem; }
+.cover-input input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.cover-input:has(input:focus-visible) .cover { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cover-input:hover .cover { filter: brightness(1.15); }
+.manage-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.manage-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.45rem 0.5rem; border-radius: 8px; flex-wrap: wrap; }
+.manage-row:hover { background: var(--surface-2); }
+.manage-row.editing { background: var(--surface-2); padding: 0.9rem; }
+.manage-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); font-weight: 700; }
+.manage-form { display: grid; gap: 0.85rem; width: 100%; }
+.row-actions { display: flex; gap: 0.4rem; margin-left: auto; }
+.manage-form .row-actions { margin-left: 0; }
+.home-playlists { display: none; }
+
 /* ---------- Mobile ---------- */
 @media (max-width: 760px) {
   :root { --player-h: 128px; }
@@ -239,4 +327,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; cursor: pointer;
   .player-center { grid-column: 1 / -1; grid-row: 2; }
   .player-volume { display: none; }
   .player-track { grid-column: 1 / -1; }
+  .library { display: none; }
+  .home-playlists { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .track-actions .icon-btn { opacity: 1; }
+  .artist-hero-avatar { width: 120px; height: 120px; font-size: 3rem; }
+  .popover { right: -8px; }
 }

@@ -24,6 +24,26 @@ export const AlbumIcon = (p) => (
 export const StudioIcon = (p) => (
   <svg {...base} {...p}><path d="M12 2a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V6a4 4 0 0 0-4-4Z" /><path d="M5 11a7 7 0 0 0 14 0M12 18v4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
 );
+export const HeartIcon = ({ filled, ...p }) => (
+  <svg {...base} {...p}>
+    <path
+      d="M12 20.5s-7.5-4.6-7.5-10.3A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.6c0 5.7-7.5 10.3-7.5 10.3Z"
+      fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinejoin="round"
+    />
+  </svg>
+);
+export const PlusIcon = (p) => (
+  <svg {...base} {...p}><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+);
+export const CloseIcon = (p) => (
+  <svg {...base} {...p}><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+);
+export const SearchIcon = (p) => (
+  <svg {...base} {...p}><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="2.2" /><path d="m16 16 4.5 4.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>
+);
+export const PlaylistIcon = (p) => (
+  <svg {...base} {...p}><path d="M4 6h12M4 11h12M4 16h7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><path d="M15 14.5v5a2 2 0 1 1-2-2h2M15 14.5l5-1.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+);
 export const LogoIcon = (p) => (
   <svg {...base} {...p}><rect x="3" y="9" width="3" height="6" rx="1.5" /><rect x="8" y="5" width="3" height="14" rx="1.5" /><rect x="13" y="2" width="3" height="20" rx="1.5" /><rect x="18" y="7" width="3" height="10" rx="1.5" /></svg>
 );
