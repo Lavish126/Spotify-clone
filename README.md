@@ -33,20 +33,20 @@ The main goal of this project is to learn how to build REST APIs, manage users a
 ## 📁 Project Structure
 
 ```text
-spotify-clone/
-├── controllers/
-├── middlewares/
-├── models/
-├── routes/
-├── db/
-├── app.js
+├── src/
+│   ├── controllers/   # auth + music logic
+│   ├── db/            # MongoDB connection
+│   ├── middlewares/   # authUser / authArtist (JWT cookie)
+│   ├── models/        # user, music, album
+│   ├── routes/
+│   ├── services/      # ImageKit upload
+│   └── app.js
+├── frontend/          # React + Vite web app
 ├── server.js
 ├── .env
 ├── .gitignore
 └── package.json
 ```
-
-*The exact folder structure may vary depending on the final project organization.*
 
 ## ⚙️ Getting Started
 
@@ -68,15 +68,13 @@ npm install
 Create a `.env` file in the project root and add your own credentials:
 
 ```env
-PORT=3000
+PORT=3000                # optional, defaults to 3000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
-IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
 ```
 
-Make sure the variable names match those used in your code.
+Set `NODE_ENV=production` when deploying over HTTPS so the auth cookie is marked `Secure`.
 
 ### 4. Start the server
 
@@ -85,6 +83,18 @@ npm run dev
 ```
 
 If everything is configured correctly, the server should start on your configured port.
+
+### 5. Start the frontend
+
+In a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173. Vite forwards `/api` requests to the backend on port 3000.
 
 ## 🔌 API Overview
 
@@ -95,11 +105,11 @@ If everything is configured correctly, the server should start on your configure
 | POST | `/api/auth/logout` | Log out |
 | POST | `/api/music/upload` | Upload music as an artist |
 | POST | `/api/music/album` | Create an album |
-| GET | `/api/music/allMusics?page=1&limit=10` | Fetch paginated music |
+| GET | `/api/music/allMusics?page=1&limit=10&artist=<id>` | Fetch paginated music, newest first (`limit` max 50, `artist` optional) |
 | GET | `/api/music/albums` | Fetch all albums |
 | GET | `/api/music/albums/:id` | Fetch an album by ID |
 
-*These endpoints assume your routes are mounted at `/api/auth` and `/api/music`. Update this table if your actual routes differ.*
+Auth uses an `httpOnly` cookie holding a JWT that expires after 7 days. Uploads accept audio files up to 20 MB. Errors are always returned as JSON `{ "message": "..." }`.
 
 ## 🧪 Testing
 

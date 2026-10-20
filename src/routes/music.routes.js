@@ -4,7 +4,14 @@ const {authArtist, authUser} = require("../middlewares/auth.middleware");
 const multer = require("multer");
 
 const upload = multer({
-    storage:multer.memoryStorage()
+    storage:multer.memoryStorage(),
+    limits:{fileSize: 20 * 1024 * 1024}, // 20 MB
+    fileFilter:(req, file, cb) => {
+        if(file.mimetype.startsWith("audio/")) return cb(null, true);
+        const error = new Error("only audio files can be uploaded");
+        error.status = 400;
+        cb(error);
+    }
 })
 
 const router = express.Router();

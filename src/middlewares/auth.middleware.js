@@ -14,7 +14,7 @@ async function authArtist(req,res,next){
 
  if(decoded.role != "artist"){
    return res.status(403).json({
-    message:"you don't have the access to create a music"
+    message:"only artists can do this"
    })
  }
  req.user = decoded;
@@ -44,7 +44,7 @@ async function authUser(req,res,next){
    req.user = decoded;
 
    if(decoded.role !== "user" && decoded.role !== "artist"){
-    return res.status(401).json({
+    return res.status(403).json({
         message:"you don't have an access"
     })
    }
